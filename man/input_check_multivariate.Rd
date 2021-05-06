@@ -12,7 +12,7 @@ input_check_multivariate(X, h)
 }}
 
 \item{h}{\itemize{
-\item Forecasting horizon (numeric)
+\item Forecasting horizon (numeric scalar)
 }}
 }
 \value{

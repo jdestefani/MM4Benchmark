@@ -8,11 +8,11 @@ input_check_univariate(x, h)
 }
 \arguments{
 \item{x}{\itemize{
-\item Input univariate series (numeric)
+\item Input univariate series (numeric vector)
 }}
 
 \item{h}{\itemize{
-\item Forecasting horizon (numeric)
+\item Forecasting horizon (numeric scalar)
 }}
 }
 \value{

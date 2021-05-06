@@ -2,8 +2,7 @@
 % Please edit documentation in R/benchmarks.R
 \name{SeasonalityTest}
 \alias{SeasonalityTest}
-\title{Auxiliary function for computing a statistical test for seasonality
-From https://github.com/M4Competition/M4-methods/blob/master/Benchmarks\%20and\%20Evaluation.R}
+\title{SeasonalityTest}
 \usage{
 SeasonalityTest(input, ppy)
 }
@@ -17,9 +16,9 @@ SeasonalityTest(input, ppy)
 }}
 }
 \value{
-test_seasonal <- Boolean value describing whether the time series is seasonal or not
+Boolean value describing whether the time series is seasonal or not
 }
 \description{
 Auxiliary function for computing a statistical test for seasonality
-From https://github.com/M4Competition/M4-methods/blob/master/Benchmarks\%20and\%20Evaluation.R
+From \url{https://github.com/M4Competition/M4-methods/blob/master/Benchmarks\%20and\%20Evaluation.R}
 }

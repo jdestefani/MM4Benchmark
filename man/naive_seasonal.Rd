@@ -2,8 +2,7 @@
 % Please edit documentation in R/benchmarks.R
 \name{naive_seasonal}
 \alias{naive_seasonal}
-\title{#' Auxiliary function for the Theta classic forecasting method.
-From https://github.com/M4Competition/M4-methods/blob/master/Benchmarks\%20and\%20Evaluation.R}
+\title{naive_seasonal}
 \usage{
 naive_seasonal(input, fh, level = c(80, 95))
 }
@@ -21,9 +20,9 @@ naive_seasonal(input, fh, level = c(80, 95))
 }}
 }
 \value{
-h-step forecast for the seasonal naive method
+h-step forecast for the seasonal naive method (numeric vector - length h)
 }
 \description{
-#' Auxiliary function for the Theta classic forecasting method.
-From https://github.com/M4Competition/M4-methods/blob/master/Benchmarks\%20and\%20Evaluation.R
+Auxiliary function for the seasonal naive forecasting method.
+From \url{https://github.com/M4Competition/M4-methods/blob/master/Benchmarks\%20and\%20Evaluation.R}
 }

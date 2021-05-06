@@ -22,11 +22,19 @@ test_that("input_check_multivariate - h not numeric", {
                fixed=T)
 })
 
-test_that("input_check_univariate - X not matrix", {
+test_that("input_check_univariate - x not numeric", {
   x <- c("1","2","3")
   h <- 5
   expect_error(input_check_univariate(x,h),
                error_x_type_string,
+               fixed=T)
+})
+
+test_that("input_check_univariate - x not vector", {
+  x <- matrix(1:4,2,2)
+  h <- 5
+  expect_error(input_check_univariate(x,h),
+               error_x_not_vector_string,
                fixed=T)
 })
 
@@ -35,6 +43,14 @@ test_that("input_check_univariate - h not numeric", {
   h <- "5"
   expect_error(input_check_univariate(x,h),
                error_h_type_string,
+               fixed=T)
+})
+
+test_that("input_check_univariate - h not scalar", {
+  x <- AirPassengers[1:10]
+  h <- 1:10
+  expect_error(input_check_univariate(x,h),
+               error_h_not_scalar_string,
                fixed=T)
 })
 

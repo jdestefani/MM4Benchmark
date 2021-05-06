@@ -2,18 +2,17 @@
 % Please edit documentation in R/benchmarks.R
 \name{ESBenchmark}
 \alias{ESBenchmark}
-\title{Auxiliary function for the exponential smoothing forecasting method.
-From https://github.com/M4Competition/M4-methods/blob/master/Benchmarks\%20and\%20Evaluation.R}
+\title{ESBenchmark}
 \usage{
 ESBenchmark(input, h, level = c(80, 95))
 }
 \arguments{
 \item{input}{\itemize{
-\item Input time series
+\item Input time series (numeric vector)
 }}
 
 \item{h}{\itemize{
-\item Forecasting horizon
+\item Forecasting horizon (numeric scalar)
 }}
 
 \item{level}{\itemize{
@@ -21,9 +20,16 @@ ESBenchmark(input, h, level = c(80, 95))
 }}
 }
 \value{
-h-step forecast for the theta classic method
+h-step forecast for the simple exponential smoothing forecasting method (numeric vector - length h)
 }
 \description{
-Auxiliary function for the exponential smoothing forecasting method.
-From https://github.com/M4Competition/M4-methods/blob/master/Benchmarks\%20and\%20Evaluation.R
+Auxiliary function for the simple exponential smoothing forecasting method.
+From \url{https://github.com/M4Competition/M4-methods/blob/master/Benchmarks\%20and\%20Evaluation.R}
+}
+\examples{
+x <- AirPassengers
+splitting_point <- round(2*length(X)/3)
+x_train <- X[1:splitting_point]
+h <- 5
+x_hat <- ESBenchmark(x_train,h)
 }

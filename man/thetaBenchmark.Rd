@@ -2,24 +2,30 @@
 % Please edit documentation in R/benchmarks.R
 \name{thetaBenchmark}
 \alias{thetaBenchmark}
-\title{Auxiliary function for the theta forecasting method.
-From https://github.com/M4Competition/M4-methods/blob/master/Benchmarks\%20and\%20Evaluation.R}
+\title{thetaBenchmark}
 \usage{
 thetaBenchmark(input, h)
 }
 \arguments{
 \item{input}{\itemize{
-\item Input time series
+\item Input time series (numeric vector)
 }}
 
 \item{h}{\itemize{
-\item Forecasting horizon
+\item Forecasting horizon (numeric scalar)
 }}
 }
 \value{
-h-step forecast for the theta classic method
+h-step forecast for the Theta method (numeric vector - length h)
 }
 \description{
-Auxiliary function for the theta forecasting method.
-From https://github.com/M4Competition/M4-methods/blob/master/Benchmarks\%20and\%20Evaluation.R
+Auxiliary function for the Theta forecasting method.
+From \url{https://github.com/M4Competition/M4-methods/blob/master/Benchmarks\%20and\%20Evaluation.R}
+}
+\examples{
+x <- AirPassengers
+splitting_point <- round(2*length(X)/3)
+x_train <- X[1:splitting_point]
+h <- 5
+x_hat <- thetaBenchmark(x_train,h)
 }

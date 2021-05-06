@@ -2,18 +2,17 @@
 % Please edit documentation in R/benchmarks.R
 \name{HoltWintersDampedBenchmark}
 \alias{HoltWintersDampedBenchmark}
-\title{Auxiliary function for the Holt-Winters damped forecasting method.
-From https://github.com/M4Competition/M4-methods/blob/master/Benchmarks\%20and\%20Evaluation.R}
+\title{HoltWintersDampedBenchmark}
 \usage{
 HoltWintersDampedBenchmark(input, h, level = c(80, 95))
 }
 \arguments{
 \item{input}{\itemize{
-\item Input time series
+\item Input time series (numeric vector)
 }}
 
 \item{h}{\itemize{
-\item Forecasting horizon
+\item Forecasting horizon (numeric scalar)
 }}
 
 \item{level}{\itemize{
@@ -21,9 +20,16 @@ HoltWintersDampedBenchmark(input, h, level = c(80, 95))
 }}
 }
 \value{
-h-step forecast for the theta classic method
+h-step forecast for the theta classic method (numeric vector - length h)
 }
 \description{
 Auxiliary function for the Holt-Winters damped forecasting method.
-From https://github.com/M4Competition/M4-methods/blob/master/Benchmarks\%20and\%20Evaluation.R
+From \url{https://github.com/M4Competition/M4-methods/blob/master/Benchmarks\%20and\%20Evaluation.R}
+}
+\examples{
+x <- AirPassengers
+splitting_point <- round(2*length(X)/3)
+x_train <- X[1:splitting_point]
+h <- 5
+x_hat <- HoltWintersDampedBenchmark(x_train,h)
 }

@@ -2,24 +2,39 @@
 % Please edit documentation in R/benchmarks.R
 \name{M4_benchmarks}
 \alias{M4_benchmarks}
-\title{Fucntion producing the forecasts according to the benchmark methods of the M4 competition.
-Adapted from https://github.com/M4Competition/M4-methods/blob/master/Benchmarks\%20and\%20Evaluation.R}
+\title{M4_benchmarks}
 \usage{
 M4_benchmarks(input, fh)
 }
 \arguments{
 \item{input}{\itemize{
-\item Input time series
+\item Input time series (numeric vector)
 }}
 
 \item{fh}{\itemize{
-\item Forecasting horizon
+\item Forecasting horizon (numeric scalar)
 }}
 }
 \value{
-List containing the forecast and the computational times of the different methods (Naive, Naive Seasonal, Naive 2, Simple Exponential smoothing ,Holt Winters, Holt Winters Damped, Theta, Comb)
+List containing:
+\itemize{
+\item{\code{Naive}: }{h-step forecast for the naive method (numeric vector - length h)}
+\item{\code{NaiveSeasonal}: }{h-step forecast for the seasonal naive method (numeric vector - length h)}
+\item{\code{SimpleES}: }{h-step forecast for the simple exponential smoothing method (numeric vector - length h)}
+\item{\code{HoltWinters}: }{h-step forecast for the Holt-Winters method (numeric vector - length h)}
+\item{\code{HoltWintersDamped}: }{h-step forecast for Holt-Winters damped method (numeric vector - length h)}
+\item{\code{Theta}: }{h-step forecast for the theta method (numeric vector - length h)}
+\item{\code{Combined}: }{h-step forecast for the combined method (numeric vector - length h)}
+\item{\code{TimeNaive}: }{Computational time for the naive method (numeric scalar)}
+\item{\code{TimeNaiveSeasonal}: }{Computational time for the seasonal naive method (numeric scalar)}
+\item{\code{TimeSimpleES}: }{Computational time for the simple exponential smoothing method (numeric scalar)}
+\item{\code{TimeHoltWinters}: }{Computational time for the Holt-Winters method (numeric scalar)}
+\item{\code{TimeHoltWintersDamped}: }{Computational time for Holt-Winters damped method (numeric scalar)}
+\item{\code{TimeTheta}: }{Computational time for the theta method (numeric scalar)}
+\item{\code{TimeCombined}: }{Computational time for the combined method (numeric scalar)}
+}
 }
 \description{
-Fucntion producing the forecasts according to the benchmark methods of the M4 competition.
-Adapted from https://github.com/M4Competition/M4-methods/blob/master/Benchmarks\%20and\%20Evaluation.R
+Function producing the univariate forecasts employing all the benchmark methods of the M4 competition.
+Adapted from \url{https://github.com/M4Competition/M4-methods/blob/master/Benchmarks\%20and\%20Evaluation.R}
 }

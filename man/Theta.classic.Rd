@@ -2,24 +2,20 @@
 % Please edit documentation in R/benchmarks.R
 \name{Theta.classic}
 \alias{Theta.classic}
-\title{Auxiliary function for the Theta classic forecasting method.
-From https://github.com/M4Competition/M4-methods/blob/master/Benchmarks\%20and\%20Evaluation.R}
+\title{Theta.classic}
 \usage{
 Theta.classic(input, fh)
 }
 \arguments{
 \item{input}{\itemize{
-\item Input time series
+\item Input time series (numeric vector)
 }}
 
 \item{fh}{\itemize{
-\item Forecasting horizon
+\item Forecasting horizon (numeric scalar)
 }}
-}
-\value{
-h-step forecast for the theta classic method
 }
 \description{
 Auxiliary function for the Theta classic forecasting method.
-From https://github.com/M4Competition/M4-methods/blob/master/Benchmarks\%20and\%20Evaluation.R
+From \url{https://github.com/M4Competition/M4-methods/blob/master/Benchmarks\%20and\%20Evaluation.R}
 }

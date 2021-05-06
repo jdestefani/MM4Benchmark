@@ -2,8 +2,7 @@
 % Please edit documentation in R/benchmarks.R
 \name{multiplicativeSeasonalityDecomposition}
 \alias{multiplicativeSeasonalityDecomposition}
-\title{Auxiliary function for computing the multiplicative seasonality decomposition
-From https://github.com/M4Competition/M4-methods/blob/master/Benchmarks\%20and\%20Evaluation.R}
+\title{multiplicativeSeasonalityDecomposition}
 \usage{
 multiplicativeSeasonalityDecomposition(input, fh)
 }
@@ -17,10 +16,12 @@ multiplicativeSeasonalityDecomposition(input, fh)
 }}
 }
 \value{
-des_input <- Deseasonalized input time series
-SIout <- Additional deseasonalization parameters
+\itemize{
+\item{\code{des_input}: }{Deseasonalized input time series}
+\item{\code{SIOut}: }{Additional deseasonalization parameters}
+}
 }
 \description{
 Auxiliary function for computing the multiplicative seasonality decomposition
-From https://github.com/M4Competition/M4-methods/blob/master/Benchmarks\%20and\%20Evaluation.R
+From \url{https://github.com/M4Competition/M4-methods/blob/master/Benchmarks\%20and\%20Evaluation.R}
 }
