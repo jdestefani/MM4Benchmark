@@ -15,6 +15,16 @@ Theta.classic(input, fh)
 \item Forecasting horizon (numeric scalar)
 }}
 }
+\value{
+\itemize{
+\item{\code{fitted}: }{Fitted values for the ensemble method averaging \eqn{\theta_0} and \eqn{theta_2}}
+\item{\code{fitted0}: }{Fitted values for \eqn{\theta_0}}
+\item{\code{fitted2}: }{Fitted values for \eqn{\theta_2}}
+\item{\code{mean}: }{Forecast values for the ensemble method averaging \eqn{\theta_0} and \eqn{\theta_2}}
+\item{\code{mean0}: }{Forecast values for \eqn{\theta_0}}
+\item{\code{mean2}: }{Forecast values for \eqn{\theta_0}}
+}
+}
 \description{
 Auxiliary function for the Theta classic forecasting method.
 From \url{https://github.com/M4Competition/M4-methods/blob/master/Benchmarks\%20and\%20Evaluation.R}

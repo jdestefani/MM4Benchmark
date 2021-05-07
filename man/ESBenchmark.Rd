@@ -28,8 +28,8 @@ From \url{https://github.com/M4Competition/M4-methods/blob/master/Benchmarks\%20
 }
 \examples{
 x <- AirPassengers
-splitting_point <- round(2*length(X)/3)
-x_train <- X[1:splitting_point]
+splitting_point <- round(2*length(x)/3)
+x_train <- x[1:splitting_point]
 h <- 5
 x_hat <- ESBenchmark(x_train,h)
 }

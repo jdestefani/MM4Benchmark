@@ -1,16 +1,38 @@
-#' Fucntion producing the forecasts according to the benchmark methods of the M4 competition.
-#' Adapted from https://github.com/M4Competition/M4-methods/blob/master/Benchmarks%20and%20Evaluation.R
-#' @param input - Input time series
-#' @param fh - Forecasting horizon
+#' M4_benchmarks
+#'
+#' Function producing the univariate forecasts employing all the benchmark methods of the M4 competition.
+#' Adapted from \url{https://github.com/M4Competition/M4-methods/blob/master/Benchmarks%20and%20Evaluation.R}
+#' @param input - Input time series (numeric vector)
+#' @param fh - Forecasting horizon (numeric scalar)
 #'
 #' @export
-#' @return List containing the forecast and the computational times of the different methods (Naive, Naive Seasonal, Naive 2, Simple Exponential smoothing ,Holt Winters, Holt Winters Damped, Theta, Comb)
-#'
+#' @return List containing:
+#'         \itemize{
+#'         \item{\code{Naive}: }{h-step forecast for the naive method (numeric vector - length h)}
+#'         \item{\code{NaiveSeasonal}: }{h-step forecast for the seasonal naive method (numeric vector - length h)}
+#'         \item{\code{SimpleES}: }{h-step forecast for the simple exponential smoothing method (numeric vector - length h)}
+#'         \item{\code{HoltWinters}: }{h-step forecast for the Holt-Winters method (numeric vector - length h)}
+#'         \item{\code{HoltWintersDamped}: }{h-step forecast for Holt-Winters damped method (numeric vector - length h)}
+#'         \item{\code{Theta}: }{h-step forecast for the theta method (numeric vector - length h)}
+#'         \item{\code{Combined}: }{h-step forecast for the combined method (numeric vector - length h)}
+#'         \item{\code{TimeNaive}: }{Computational time for the naive method (numeric scalar)}
+#'         \item{\code{TimeNaiveSeasonal}: }{Computational time for the seasonal naive method (numeric scalar)}
+#'         \item{\code{TimeSimpleES}: }{Computational time for the simple exponential smoothing method (numeric scalar)}
+#'         \item{\code{TimeHoltWinters}: }{Computational time for the Holt-Winters method (numeric scalar)}
+#'         \item{\code{TimeHoltWintersDamped}: }{Computational time for Holt-Winters damped method (numeric scalar)}
+#'         \item{\code{TimeTheta}: }{Computational time for the theta method (numeric scalar)}
+#'         \item{\code{TimeCombined}: }{Computational time for the combined method (numeric scalar)}
+#'         }
+#' @examples
+#' x <- AirPassengers
+#' splitting_point <- round(2*length(x)/3)
+#' x_train <- x[1:splitting_point]
+#' h <- 5
+#' univariate_results <- M4_benchmarks(x_train,h)
 M4_benchmarks <- function(input, fh){
   #Used to estimate the statistical benchmarks of the M4 competition
 
   ptm <- proc.time()
-  #decomposition_results <- multiplicativeSeasonalityDecomposition(input)
   ppy <- stats::frequency(input)
   ST <- F
   if (ppy>1){ ST <- SeasonalityTest(input,ppy) }
@@ -23,9 +45,6 @@ M4_benchmarks <- function(input, fh){
     SIout <- rep(1, fh)
   }
   time_decompose <- proc.time() - ptm
-
-  #des_input <- decomposition_results$des_input
-  #SIout <- decomposition_results$SIout
 
   ptm <- proc.time()
   f1 <- forecast::naive(input, h=fh)$mean #Naive
@@ -63,18 +82,42 @@ M4_benchmarks <- function(input, fh){
               TimeTheta=time_theta[3]+time_decompose[3],TimeComb=time_ses[3]+time_holt[3]+time_holt_damped[3]+time_decompose[3]))
 }
 
-#' Quick and dirty multivariate implementation of the M4 benchmarks
-#' https://github.com/M4Competition/M4-methods/blob/master/Benchmarks%20and%20Evaluation.R
+#' multivariate_M4benchmarks
 #'
-#' @param Xtr - Training data
-#' @param H - Forecasting horizon
+#'  Function producing the multivariate forecasts employing all the benchmark methods of the M4 competition.
+#'  The multivariate implementation is made by launching in parallel the different univariate M4 benchmarks
+#'  \url{https://github.com/M4Competition/M4-methods/blob/master/Benchmarks%20and%20Evaluation.R} on all the multivariate series
+#'
+#' @param Xtr - Training data (numeric matrix with N columns)
+#' @param h - Forecasting horizon
 #'
 #' @export
-#' @return List of forecasts and excecution time for the different methods (Naive, Naive Seasonal, Naive 2, Simple Exponential smoothing ,Holt Winters, Holt Winters Damped, Theta, Comb)
-#'         Forecast are in a HxN(number of variables) matrix format, whereas the time is in a numeric format
-multivariate_M4benchmarks <- function(Xtr,H){
+#' @return List containing:
+#'         \itemize{
+#'         \item{\code{Naive}: }{h-step forecast for the naive method (numeric matrix - dimensions h x N)}
+#'         \item{\code{NaiveSeasonal}: }{h-step forecast for the seasonal naive method (numeric matrix - dimensions h x N)}
+#'         \item{\code{SimpleES}: }{h-step forecast for the simple exponential smoothing method (numeric matrix - dimensions h x N)}
+#'         \item{\code{HoltWinters}: }{h-step forecast for the Holt-Winters method (numeric matrix - dimensions h x N)}
+#'         \item{\code{HoltWintersDamped}: }{h-step forecast for Holt-Winters damped method (numeric matrix - dimensions h x N)}
+#'         \item{\code{Theta}: }{h-step forecast for the theta method (numeric matrix - dimensions h x N)}
+#'         \item{\code{Combined}: }{h-step forecast for the combined method (numeric matrix - dimensions h x N)}
+#'         \item{\code{TimeNaive}: }{Computational time for the naive method (numeric scalar)}
+#'         \item{\code{TimeNaiveSeasonal}: }{Computational time for the seasonal naive method (numeric scalar)}
+#'         \item{\code{TimeSimpleES}: }{Computational time for the simple exponential smoothing method (numeric scalar)}
+#'         \item{\code{TimeHoltWinters}: }{Computational time for the Holt-Winters method (numeric scalar)}
+#'         \item{\code{TimeHoltWintersDamped}: }{Computational time for Holt-Winters damped method (numeric scalar)}
+#'         \item{\code{TimeTheta}: }{Computational time for the theta method (numeric scalar)}
+#'         \item{\code{TimeCombined}: }{Computational time for the combined method (numeric scalar)}
+#'         }
+#' @examples
+#' X <- EuStockMarkets
+#' splitting_point <- round(2*dim(X)[1]/3)
+#' X_train <- X[1:splitting_point,]
+#' h <- 5
+#' multivariate_results <- multivariate_M4benchmarks(X_train,h)
+multivariate_M4benchmarks <- function(Xtr,h){
 
-  forecast_list <- apply(Xtr, 2, M4_benchmarks,fh=H)
+  forecast_list <- apply(Xtr, 2, M4_benchmarks,fh=h)
 
   naive_matrix <- Reduce(cbind,lapply(forecast_list, function(x){matrix(x$Naive)}))
   naive_seasonal_matrix <- Reduce(cbind,lapply(forecast_list, function(x){matrix(x$NaiveSeasonal)}))
@@ -102,12 +145,14 @@ multivariate_M4benchmarks <- function(Xtr,H){
 
 }
 
+#' SeasonalityTest
+#'
 #' Auxiliary function for computing a statistical test for seasonality
-#' From https://github.com/M4Competition/M4-methods/blob/master/Benchmarks%20and%20Evaluation.R
+#' From \url{https://github.com/M4Competition/M4-methods/blob/master/Benchmarks%20and%20Evaluation.R}
 #' @param input - Input time series
 #' @param ppy - Seasonality period
 #'
-#' @return test_seasonal <- Boolean value describing whether the time series is seasonal or not
+#' @return Boolean value describing whether the time series is seasonal or not
 SeasonalityTest <- function(input, ppy){
   #Used to determine whether a time series is seasonal
   tcrit <- 1.645
@@ -124,13 +169,18 @@ SeasonalityTest <- function(input, ppy){
   return(test_seasonal)
 }
 
+#' multiplicativeSeasonalityDecomposition
+#'
 #' Auxiliary function for computing the multiplicative seasonality decomposition
-#' From https://github.com/M4Competition/M4-methods/blob/master/Benchmarks%20and%20Evaluation.R
+#' From \url{https://github.com/M4Competition/M4-methods/blob/master/Benchmarks%20and%20Evaluation.R}
 #' @param input - Input time series
 #' @param fh - Forecasting horizon
 #'
-#' @return des_input <- Deseasonalized input time series
-#'         SIout <- Additional deseasonalization parameters
+#' @return \itemize{
+#'         \item{\code{des_input}: }{Deseasonalized input time series}
+#'         \item{\code{SIOut}: }{Additional deseasonalization parameters}
+#'         }
+#'
 multiplicativeSeasonalityDecomposition <- function(input,fh){
   ppy <- stats::frequency(input)
   ST <- F
@@ -146,17 +196,17 @@ multiplicativeSeasonalityDecomposition <- function(input,fh){
   return(list(des_input=des_input,SIout=SIout))
 }
 
+#' naive_seasonal
 #'
 #' Auxiliary function for the seasonal naive forecasting method.
-#' From https://github.com/M4Competition/M4-methods/blob/master/Benchmarks%20and%20Evaluation.R
+#' From \url{https://github.com/M4Competition/M4-methods/blob/master/Benchmarks%20and%20Evaluation.R}
 #'
 #' @param input - Input time series (numeric vector)
 #' @param fh - Forecasting horizon (numeric)
 #' @param level - Numeric vector (length 2) containing the upper and lower bound for interval forecasting
 #'
 #' @import forecast
-#' @export
-#' @return h-step forecast for the seasonal naive method
+#' @return h-step forecast for the seasonal naive method (numeric vector - length h)
 naive_seasonal <- function(input, fh, level=c(80,95)){
   input_check_univariate(input,fh)
   input_check_level(level)
@@ -171,14 +221,23 @@ naive_seasonal <- function(input, fh, level=c(80,95)){
 }
 
 
+#' Theta.classic
+#'
 #' Auxiliary function for the Theta classic forecasting method.
-#' From https://github.com/M4Competition/M4-methods/blob/master/Benchmarks%20and%20Evaluation.R
-#' @param input - Input time series
-#' @param fh - Forecasting horizon
+#' From \url{https://github.com/M4Competition/M4-methods/blob/master/Benchmarks%20and%20Evaluation.R}
+#' @param input - Input time series (numeric vector)
+#' @param fh - Forecasting horizon (numeric scalar)
 #'
 #' @import forecast
-#' @export
-#' @return h-step forecast for the theta classic method
+#'
+#' @return \itemize{
+#'         \item{\code{fitted}: }{Fitted values for the ensemble method averaging \eqn{\theta_0} and \eqn{theta_2}}
+#'         \item{\code{fitted0}: }{Fitted values for \eqn{\theta_0}}
+#'         \item{\code{fitted2}: }{Fitted values for \eqn{\theta_2}}
+#'         \item{\code{mean}: }{Forecast values for the ensemble method averaging \eqn{\theta_0} and \eqn{\theta_2}}
+#'         \item{\code{mean0}: }{Forecast values for \eqn{\theta_0}}
+#'         \item{\code{mean2}: }{Forecast values for \eqn{\theta_0}}
+#'         }
 Theta.classic <- function(input, fh){
   input_check_univariate(input,fh)
   #Used to estimate Theta classic
@@ -220,16 +279,23 @@ Theta.classic <- function(input, fh){
 
 }
 
+#' naiveBenchmark
+#'
 #' Auxiliary function for the naive forecasting method.
-#' From https://github.com/M4Competition/M4-methods/blob/master/Benchmarks%20and%20Evaluation.R
-#' @param input - Input time series
-#' @param h - Forecasting horizon
+#' From \url{https://github.com/M4Competition/M4-methods/blob/master/Benchmarks%20and%20Evaluation.R}
+#' @param input - Input time series (numeric vector)
+#' @param h - Forecasting horizon (numeric scalar)
 #' @param level - Numeric vector (length 2) containing the upper and lower bound for interval forecasting
 #'
 #' @import forecast
 #' @export
-#' @return h-step forecast for the theta classic method
-
+#' @return h-step forecast for the naive forecasting method (numeric vector - length h)
+#' @examples
+#' x <- AirPassengers
+#' splitting_point <- round(2*length(x)/3)
+#' x_train <- x[1:splitting_point]
+#' h <- 5
+#' x_hat <- naiveBenchmark(x_train,h)
 naiveBenchmark <- function(input,h,level=c(80,95)){
   input_check_univariate(input,h)
   input_check_level(level)
@@ -241,14 +307,22 @@ naiveBenchmark <- function(input,h,level=c(80,95)){
   return(list(model=model,forecasts=forecasts,time=time[3]))
 }
 
+#' naiveSeasonalBenchmark
+#'
 #' Auxiliary function for the seasonal naive forecasting method.
-#' From https://github.com/M4Competition/M4-methods/blob/master/Benchmarks%20and%20Evaluation.R
-#' @param input - Input time series
-#' @param h - Forecasting horizon
+#' From \url{https://github.com/M4Competition/M4-methods/blob/master/Benchmarks%20and%20Evaluation.R}
+#' @param input - Input time series (numeric vector)
+#' @param h - Forecasting horizon (numeric scalar)
 #' @param level - Numeric vector (length 2) containing the upper and lower bound for interval forecasting
 #'
 #' @export
-#' @return h-step forecast for the theta classic method
+#' @return h-step forecast for the naive seasonal forecasting method (numeric vector - length h)
+#' @examples
+#' x <- AirPassengers
+#' splitting_point <- round(2*length(x)/3)
+#' x_train <- x[1:splitting_point]
+#' h <- 5
+#' x_hat <- naiveSeasonalBenchmark(x_train,h)
 naiveSeasonalBenchmark <- function(input,h,level=c(80,95)){
   input_check_univariate(input,h)
   input_check_level(level)
@@ -259,15 +333,23 @@ naiveSeasonalBenchmark <- function(input,h,level=c(80,95)){
   return(list(model=forecasts[1],forecasts=forecasts,time=time[3]))
 }
 
+#' naive2Benchmark
+#'
 #' Auxiliary function for the naive 2 forecasting method.
-#' From https://github.com/M4Competition/M4-methods/blob/master/Benchmarks%20and%20Evaluation.R
-#' @param input - Input time series
-#' @param h - Forecasting horizon
+#' From \url{https://github.com/M4Competition/M4-methods/blob/master/Benchmarks%20and%20Evaluation.R}
+#' @param input - Input time series (numeric vector)
+#' @param h - Forecasting horizon (numeric scalar)
 #' @param level - Numeric vector (length 2) containing the upper and lower bound for interval forecasting
 #'
 #' @import forecast
 #' @export
-#' @return h-step forecast for the theta classic method
+#' @return h-step forecast for the naive 2 forecasting method (numeric vector - length h)
+#' @examples
+#' x <- AirPassengers
+#' splitting_point <- round(2*length(x)/3)
+#' x_train <- x[1:splitting_point]
+#' h <- 5
+#' x_hat <- naive2Benchmark(x_train,h)
 naive2Benchmark <- function(input,h,level=c(80,95)){
   input_check_univariate(input,h)
   input_check_level(level)
@@ -283,15 +365,23 @@ naive2Benchmark <- function(input,h,level=c(80,95)){
   return(list(model=model,forecasts=forecasts,time=time[3]))
 }
 
-#' Auxiliary function for the exponential smoothing forecasting method.
-#' From https://github.com/M4Competition/M4-methods/blob/master/Benchmarks%20and%20Evaluation.R
-#' @param input - Input time series
-#' @param h - Forecasting horizon
+#' ESBenchmark
+#'
+#' Auxiliary function for the simple exponential smoothing forecasting method.
+#' From \url{https://github.com/M4Competition/M4-methods/blob/master/Benchmarks%20and%20Evaluation.R}
+#' @param input - Input time series (numeric vector)
+#' @param h - Forecasting horizon (numeric scalar)
 #' @param level - Numeric vector (length 2) containing the upper and lower bound for interval forecasting
 #'
 #' @import forecast
 #' @export
-#' @return h-step forecast for the theta classic method
+#' @return h-step forecast for the simple exponential smoothing forecasting method (numeric vector - length h)
+#' @examples
+#' x <- AirPassengers
+#' splitting_point <- round(2*length(x)/3)
+#' x_train <- x[1:splitting_point]
+#' h <- 5
+#' x_hat <- ESBenchmark(x_train,h)
 ESBenchmark <- function(input,h,level=c(80,95)){
   input_check_univariate(input,h)
   input_check_level(level)
@@ -307,15 +397,23 @@ ESBenchmark <- function(input,h,level=c(80,95)){
   return(list(model=model,forecasts=forecasts,time=time[3]))
 }
 
+#' HoltWintersBenchmark
+#'
 #' Auxiliary function for the exponential smoothing forecasting method.
-#' From https://github.com/M4Competition/M4-methods/blob/master/Benchmarks%20and%20Evaluation.R
-#' @param input - Input time series
-#' @param h - Forecasting horizon
+#' From \url{https://github.com/M4Competition/M4-methods/blob/master/Benchmarks%20and%20Evaluation.R}
+#' @param input - Input time series (numeric vector)
+#' @param h - Forecasting horizon (numeric scalar)
 #' @param level - Numeric vector (length 2) containing the upper and lower bound for interval forecasting
 #'
 #' @import forecast
 #' @export
-#' @return h-step forecast for the Holt-Winters classic method
+#' @return h-step forecast for the Holt-Winters classic method (numeric vector - length h)
+#' @examples
+#' x <- AirPassengers
+#' splitting_point <- round(2*length(x)/3)
+#' x_train <- x[1:splitting_point]
+#' h <- 5
+#' x_hat <- HoltWintersBenchmark(x_train,h)
 HoltWintersBenchmark <- function(input,h,level=c(80,95)){
   input_check_univariate(input,h)
   input_check_level(level)
@@ -331,15 +429,23 @@ HoltWintersBenchmark <- function(input,h,level=c(80,95)){
   return(list(model=model,forecasts=forecasts,time=time[3]))
 }
 
+#' HoltWintersDampedBenchmark
+#'
 #' Auxiliary function for the Holt-Winters damped forecasting method.
-#' From https://github.com/M4Competition/M4-methods/blob/master/Benchmarks%20and%20Evaluation.R
-#' @param input - Input time series
-#' @param h - Forecasting horizon
+#' From \url{https://github.com/M4Competition/M4-methods/blob/master/Benchmarks%20and%20Evaluation.R}
+#' @param input - Input time series (numeric vector)
+#' @param h - Forecasting horizon (numeric scalar)
 #' @param level - Numeric vector (length 2) containing the upper and lower bound for interval forecasting
 #'
 #' @import forecast
 #' @export
-#' @return h-step forecast for the theta classic method
+#' @return h-step forecast for the theta classic method (numeric vector - length h)
+#' @examples
+#' x <- AirPassengers
+#' splitting_point <- round(2*length(x)/3)
+#' x_train <- x[1:splitting_point]
+#' h <- 5
+#' x_hat <- HoltWintersDampedBenchmark(x_train,h)
 HoltWintersDampedBenchmark <- function(input,h,level=c(80,95)){
   input_check_univariate(input,h)
   input_check_level(level)
@@ -355,13 +461,21 @@ HoltWintersDampedBenchmark <- function(input,h,level=c(80,95)){
   return(list(model=model,forecasts=forecasts,time=time[3]))
 }
 
-#' Auxiliary function for the theta forecasting method.
-#' From https://github.com/M4Competition/M4-methods/blob/master/Benchmarks%20and%20Evaluation.R
-#' @param input - Input time series
-#' @param h - Forecasting horizon
+#' thetaBenchmark
+#'
+#' Auxiliary function for the Theta forecasting method.
+#' From \url{https://github.com/M4Competition/M4-methods/blob/master/Benchmarks%20and%20Evaluation.R}
+#' @param input - Input time series (numeric vector)
+#' @param h - Forecasting horizon (numeric scalar)
 #'
 #' @export
-#' @return h-step forecast for the theta classic method
+#' @return h-step forecast for the Theta method (numeric vector - length h)
+#' @examples
+#' x <- AirPassengers
+#' splitting_point <- round(2*length(x)/3)
+#' x_train <- x[1:splitting_point]
+#' h <- 5
+#' x_hat <- thetaBenchmark(x_train,h)
 thetaBenchmark <- function(input,h){
   input_check_univariate(input,h)
 
@@ -376,15 +490,23 @@ thetaBenchmark <- function(input,h){
   return(list(model=model,forecasts=forecasts,time=time[3]))
 }
 
+#' combinedBenchmark
+#'
 #' Auxiliary function for the combined forecasting method.
-#' From https://github.com/M4Competition/M4-methods/blob/master/Benchmarks%20and%20Evaluation.R
-#' @param input - Input time series
-#' @param h - Forecasting horizon
+#' From \url{https://github.com/M4Competition/M4-methods/blob/master/Benchmarks%20and%20Evaluation.R}
+#' @param input - Input time series (numeric vector)
+#' @param h - Forecasting horizon (numeric scalar)
 #' @param level - Numeric vector (length 2) containing the upper and lower bound for interval forecasting
 #'
 #' @import forecast
 #' @export
-#' @return h-step forecast for the theta classic method
+#' @return h-step forecast for the combined forecasting method (numeric vector - length h)
+#' @examples
+#' x <- AirPassengers
+#' splitting_point <- round(2*length(x)/3)
+#' x_train <- x[1:splitting_point]
+#' h <- 5
+#' x_hat <- combinedBenchmark(x_train,h)
 combinedBenchmark <- function(input,h,level=c(80,95)){
   input_check_univariate(input,h)
   input_check_level(level)

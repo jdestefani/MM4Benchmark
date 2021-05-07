@@ -18,13 +18,13 @@ multivariate_M4benchmarks(Xtr, h)
 \value{
 List containing:
 \itemize{
-\item{\code{Naive}: }{h-step forecast for the naive method (numeric matrix - dimension h  N)}
-\item{\code{NaiveSeasonal}: }{h-step forecast for the seasonal naive method (numeric vector - length h)}
-\item{\code{SimpleES}: }{h-step forecast for the simple exponential smoothing method (numeric vector - length h)}
-\item{\code{HoltWinters}: }{h-step forecast for the Holt-Winters method (numeric vector - length h)}
-\item{\code{HoltWintersDamped}: }{h-step forecast for Holt-Winters damped method (numeric vector - length h)}
-\item{\code{Theta}: }{h-step forecast for the theta method (numeric vector - length h)}
-\item{\code{Combined}: }{h-step forecast for the combined method (numeric vector - length h)}
+\item{\code{Naive}: }{h-step forecast for the naive method (numeric matrix - dimensions h x N)}
+\item{\code{NaiveSeasonal}: }{h-step forecast for the seasonal naive method (numeric matrix - dimensions h x N)}
+\item{\code{SimpleES}: }{h-step forecast for the simple exponential smoothing method (numeric matrix - dimensions h x N)}
+\item{\code{HoltWinters}: }{h-step forecast for the Holt-Winters method (numeric matrix - dimensions h x N)}
+\item{\code{HoltWintersDamped}: }{h-step forecast for Holt-Winters damped method (numeric matrix - dimensions h x N)}
+\item{\code{Theta}: }{h-step forecast for the theta method (numeric matrix - dimensions h x N)}
+\item{\code{Combined}: }{h-step forecast for the combined method (numeric matrix - dimensions h x N)}
 \item{\code{TimeNaive}: }{Computational time for the naive method (numeric scalar)}
 \item{\code{TimeNaiveSeasonal}: }{Computational time for the seasonal naive method (numeric scalar)}
 \item{\code{TimeSimpleES}: }{Computational time for the simple exponential smoothing method (numeric scalar)}
@@ -33,12 +33,16 @@ List containing:
 \item{\code{TimeTheta}: }{Computational time for the theta method (numeric scalar)}
 \item{\code{TimeCombined}: }{Computational time for the combined method (numeric scalar)}
 }
-
-List of forecasts and excecution time for the different methods (Naive, Naive Seasonal, Naive 2, Simple Exponential smoothing ,Holt Winters, Holt Winters Damped, Theta, Comb)
-Forecast are in a HxN(number of variables) matrix format, whereas the time is in a numeric format
 }
 \description{
 Function producing the multivariate forecasts employing all the benchmark methods of the M4 competition.
 The multivariate implementation is made by launching in parallel the different univariate M4 benchmarks
 \url{https://github.com/M4Competition/M4-methods/blob/master/Benchmarks\%20and\%20Evaluation.R} on all the multivariate series
+}
+\examples{
+X <- EuStockMarkets
+splitting_point <- round(2*dim(X)[1]/3)
+X_train <- X[1:splitting_point,]
+h <- 5
+multivariate_results <- multivariate_M4benchmarks(X_train,h)
 }

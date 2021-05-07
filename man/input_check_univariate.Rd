@@ -21,5 +21,5 @@ input_check_univariate(x, h)
 }
 }
 \description{
-Verifies that the input values to the univariate forecasting function have the correct types
+Verifies that the input values to the univariate forecasting function have the correct types and dimensions
 }

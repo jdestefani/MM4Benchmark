@@ -21,5 +21,5 @@ input_check_multivariate(X, h)
 }
 }
 \description{
-Verifies that the input values to the multivariate forecasting function have the correct types
+Verifies that the input values to the multivariate forecasting function have the correct types and dimensions
 }

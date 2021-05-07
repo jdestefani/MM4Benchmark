@@ -38,3 +38,10 @@ List containing:
 Function producing the univariate forecasts employing all the benchmark methods of the M4 competition.
 Adapted from \url{https://github.com/M4Competition/M4-methods/blob/master/Benchmarks\%20and\%20Evaluation.R}
 }
+\examples{
+x <- AirPassengers
+splitting_point <- round(2*length(x)/3)
+x_train <- x[1:splitting_point]
+h <- 5
+univariate_results <- M4_benchmarks(x_train,h)
+}

@@ -10,7 +10,7 @@ error_level_order_string <- "[ERROR] - Parameter level's values should be ordere
 
 #' input_check_multivariate
 #'
-#' Verifies that the input values to the multivariate forecasting function have the correct types
+#' Verifies that the input values to the multivariate forecasting function have the correct types and dimensions
 #'
 #' @param X - Target matrix (hxk) for k variables
 #' @param h - Forecasting horizon (numeric scalar)
@@ -34,7 +34,7 @@ input_check_multivariate <- function(X,h){
 
 #' input_check_univariate
 #'
-#' Verifies that the input values to the univariate forecasting function have the correct types
+#' Verifies that the input values to the univariate forecasting function have the correct types and dimensions
 #'
 #' @param x - Input univariate series (numeric vector)
 #' @param h - Forecasting horizon (numeric scalar)
