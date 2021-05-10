@@ -1,0 +1,16 @@
+citHeader("To cite MM4Benchmark in publications use:")
+
+citEntry(
+  entry    = "misc",
+  title    = "Multivariate (multi-univariate) M4 Benchmarks",
+  author   = person(given = "Jacopo",
+           family = "De Stefani",
+           comment = c(ORCID = "0000-0003-0257-4537")),
+  journal  = "GitHub",
+  year     = "2021",
+  url      = "https://github.com/jdestefani/MM4Benchmark",
+  textVersion = paste("Jacopo De Stefani (ORCID: 0000-0003-0257-4537) (2021).",
+                      "Multivariate (multi-univariate) M4 Benchmarks.",
+                      "URL https://github.com/jdestefani/MM4Benchmark"
+  )
+)
